@@ -50,7 +50,6 @@ function App() {
             toLevel: 'sub',
             nodeData: node.data,
           });
-          // Note: We don't setLevel('sub') here yet, handleAnimationComplete will do it.
         }
       }
     }
@@ -71,7 +70,7 @@ function App() {
   const goBack = () => {
     const containerRect = containerRef.current?.getBoundingClientRect();
     if (containerRect) {
-      // For shrinking, we switch to 'main' IMMEDIATELY so it's in the background
+      // Show main canvas immediately to maintain its state in background
       setLevel('main');
       
       setTransition({
@@ -87,13 +86,23 @@ function App() {
   return (
     <div className="app-container" ref={containerRef}>
       <div className="canvas-wrapper" style={{ display: level === 'main' ? 'block' : 'none' }}>
-        <FlowCanvas nodes={initialNodes} edges={[]} onNodeClick={onNodeClick} />
+        <FlowCanvas 
+          nodes={initialNodes} 
+          edges={[]} 
+          onNodeClick={onNodeClick} 
+          fitViewOnInit={true} 
+        />
       </div>
 
       <div className="canvas-wrapper" style={{ display: level === 'sub' ? 'block' : 'none' }}>
         <div className="sub-canvas-container">
           <button className="back-button" onClick={goBack}>Back to Main</button>
-          <FlowCanvas nodes={subNodes} edges={subEdges} onNodeClick={() => {}} />
+          <FlowCanvas 
+            nodes={subNodes} 
+            edges={subEdges} 
+            onNodeClick={() => {}} 
+            fitViewOnInit={true}
+          />
         </div>
       </div>
 
